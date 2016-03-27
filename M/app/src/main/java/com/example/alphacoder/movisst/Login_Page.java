@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alphacoder.movisst.Model.AccessToken;
+import com.example.alphacoder.movisst.Model.LoginResult;
 import com.example.alphacoder.movisst.Network.ApiClient;
 
 import retrofit2.Call;
@@ -31,44 +32,57 @@ public class Login_Page extends AppCompatActivity {
         password=(EditText)findViewById(R.id.password);
         submit=(Button)findViewById(R.id.submit);
 
-
-
         submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 //Login successful
-                Call<AccessToken> newAccessToken = ApiClient.getInterface().getAccessToken();
+                Call<AccessToken> newAccessToken = ApiClient.getInterface().getAccessToken(api_key);
 
                 newAccessToken.enqueue(new Callback<AccessToken>() {
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
                         if (response.isSuccessful())
                         {
-                            Toast.makeText(Login_Page.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            AccessToken accesstoken=response.body();
 
+                            String token=accesstoken.getRequest_token();
+                            Call<LoginResult> newresult= ApiClient.getInterface().tryLogin(username.getText().toString(),password.getText().toString(),api_key,token);
+
+                            newresult.enqueue(
+                                    new Callback<LoginResult>() {
+                                        @Override
+                                        public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                                            if (response.isSuccessful()) {
+                                                Toast.makeText(Login_Page.this, "Nailed it", Toast.LENGTH_SHORT).show();
+
+                                                Intent i=new Intent();
+                                                i.setClass(getApplicationContext(),Home_Page.class);
+                                                startActivity(i);
+
+                                            } else {
+                                                Toast.makeText(Login_Page.this, "unsuccessful", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        @Override
+                                        public void onFailure(Call<LoginResult> call, Throwable t) {
+                                            Toast.makeText(Login_Page.this, "I am Deadpool", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                            );
                         }
                         else
                         {
-                            //AccessToken token=new AccessToken();
-                            //token=response.body();
-                            Log.i("login", String.valueOf(response.code()));
-                            //Toast.makeText(Login_Page.this, token.getStatus_message(), Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(Login_Page.this, "unsuccessful", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onFailure(Call<AccessToken> call, Throwable t) {
 
-                        Toast.makeText(Login_Page.this, "Fuckedup", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login_Page.this, "I am Deadpool", Toast.LENGTH_SHORT).show();
                     }
                 });
-                //Intent i=new Intent();
-                //i.setClass(getApplicationContext(),Home_Page.class);
-                //startActivity(i);
 
-                //else
             }
         });
 

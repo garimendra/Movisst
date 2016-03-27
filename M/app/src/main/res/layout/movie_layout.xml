@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="195dp"
+        android:layout_height="250dp"
+        android:id="@+id/poster"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="2dp" />
+
+    <TextView
+
+        android:text="MOVIE"
+        android:textColor="#FFFFFF"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/moviename"
+        android:textSize="20sp"
+        android:background="@color/login_page"
+        android:paddingLeft="20dp" />
+
+
+</LinearLayout>

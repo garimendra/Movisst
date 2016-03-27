@@ -22,7 +22,8 @@
         <activity
             android:name=".Home_Page"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".Top_Rated"></activity>
+        <activity android:name=".Top_Rated"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>
