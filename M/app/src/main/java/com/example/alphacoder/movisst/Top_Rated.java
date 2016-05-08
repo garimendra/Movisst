@@ -17,7 +17,6 @@ import retrofit2.Response;
 
 public class Top_Rated extends AppCompatActivity {
 
-    final static String api_key="de3e6b37e4f6eb8ff97b6acb87b35264";
 
     Movie_result movie_result;
     ArrayList<Movie> MovieList;
@@ -37,7 +36,7 @@ public class Top_Rated extends AppCompatActivity {
         gridView.setAdapter(adapter);
 
 
-        Call<Movie_result> ratedmovies= ApiClient.getInterface().getTopRated(api_key);
+        Call<Movie_result> ratedmovies= ApiClient.getInterface().getTopRated(getResources().getString(R.string.api_key));
 
         ratedmovies.enqueue(new Callback<Movie_result>() {
             @Override

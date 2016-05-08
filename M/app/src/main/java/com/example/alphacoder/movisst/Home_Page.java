@@ -28,5 +28,15 @@ public class Home_Page extends AppCompatActivity {
                     }
                 }
         );
+        favourites.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i=new Intent();
+                        i.setClass(getApplicationContext(),FavouritesActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
     }
 }

@@ -1,6 +1,8 @@
 package com.example.alphacoder.movisst;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +23,6 @@ import retrofit2.Response;
 public class Login_Page extends AppCompatActivity {
 
     Button submit;
-    final static String api_key="de3e6b37e4f6eb8ff97b6acb87b35264";
     EditText username,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class Login_Page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Login successful
-                Call<AccessToken> newAccessToken = ApiClient.getInterface().getAccessToken(api_key);
+                Call<AccessToken> newAccessToken = ApiClient.getInterface().getAccessToken(getResources().getString(R.string.api_key));
 
                 newAccessToken.enqueue(new Callback<AccessToken>() {
                     @Override
@@ -47,7 +48,10 @@ public class Login_Page extends AppCompatActivity {
                             AccessToken accesstoken=response.body();
 
                             String token=accesstoken.getRequest_token();
-                            Call<LoginResult> newresult= ApiClient.getInterface().tryLogin(username.getText().toString(),password.getText().toString(),api_key,token);
+
+                            save_token(token);
+
+                            Call<LoginResult> newresult= ApiClient.getInterface().tryLogin(username.getText().toString(),password.getText().toString(),getResources().getString(R.string.api_key),token);
 
                             newresult.enqueue(
                                     new Callback<LoginResult>() {
@@ -86,5 +90,14 @@ public class Login_Page extends AppCompatActivity {
             }
         });
 
+    }
+    public void save_token(String token)
+    {
+        SharedPreferences sp =
+                getSharedPreferences("Movisst",
+                        Context.MODE_PRIVATE );
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("token",token);
+        editor.commit();
     }
 }
